@@ -129,9 +129,11 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
         mMaskColour = Color.parseColor(ShowcaseConfig.DEFAULT_MASK_COLOUR);
         setVisibility(INVISIBLE);
+    }
 
-
-        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.showcase_content, this, true);
+    private void setupView(int layoutResId) {
+        View contentView = LayoutInflater.from(getContext()).inflate(layoutResId == 0
+                ? R.layout.showcase_content : layoutResId, this, true);
         mContentBox = contentView.findViewById(R.id.content_box);
         mTitleTextView = contentView.findViewById(R.id.tv_title);
         mContentTextView = contentView.findViewById(R.id.tv_content);
@@ -141,7 +143,6 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         mSkipButton = contentView.findViewById(R.id.tv_skip);
         mSkipButton.setOnClickListener(this);
     }
-
 
     /**
      * Interesting drawing stuff.
@@ -657,9 +658,14 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         private final Activity activity;
 
         public Builder(Activity activity) {
+            this(activity, 0);
+        }
+
+        public Builder(Activity activity, int layoutResId) {
             this.activity = activity;
 
             showcaseView = new MaterialShowcaseView(activity);
+            showcaseView.setupView(layoutResId);
         }
 
         /**
